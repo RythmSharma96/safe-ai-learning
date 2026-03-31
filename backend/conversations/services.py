@@ -14,35 +14,6 @@ from .models import Conversation, Message
 
 logger = logging.getLogger(__name__)
 
-# Category-specific canned safe responses for flagged input
-SAFE_RESPONSES = {
-    "self_harm": (
-        "I care about you and want you to be safe. If you're going through a tough time, "
-        "please talk to a trusted adult like a parent, teacher, or school counselor. "
-        "You can also call Kids Helpline at 1800 55 1800. "
-        "I'm here to help you learn — let's focus on something positive together!"
-    ),
-    "pii_request": (
-        "I'm not able to share or receive personal information like phone numbers, "
-        "emails, or addresses. This is to keep everyone safe! "
-        "Is there a learning topic I can help you with instead?"
-    ),
-    "sexual_content": (
-        "That's not something I'm able to help with. "
-        "Let's talk about something fun to learn instead! "
-        "Do you have any questions about science, math, history, or another subject?"
-    ),
-    "manipulation": (
-        "I want to make sure you stay safe. If anyone ever makes you feel uncomfortable "
-        "or asks you to keep secrets from your parents or teachers, please tell a trusted adult. "
-        "Now, what would you like to learn about today?"
-    ),
-    "moderation_unavailable": (
-        "I need a moment — could you try asking your question again? "
-        "I'm here to help you learn!"
-    ),
-}
-
 DEFAULT_SAFE_RESPONSE = (
     "I'm not able to help with that, but I'd love to help you learn something new! "
     "What subject are you curious about?"
@@ -67,14 +38,24 @@ def _get_safety_pipeline() -> SafetyPipeline:
 
 
 def _get_canned_response(categories: list[str]) -> str:
-    """Get the most appropriate canned response based on flag categories."""
+    """Get the most appropriate canned response from the database."""
     priority = ["self_harm", "sexual_content", "pii_request", "manipulation"]
-    for cat in priority:
-        if cat in categories:
-            return SAFE_RESPONSES[cat]
+    for cat_name in priority:
+        if cat_name in categories:
+            try:
+                category = FlagCategory.objects.get(name=cat_name)
+                if category.canned_response:
+                    return category.canned_response
+            except FlagCategory.DoesNotExist:
+                pass
 
     if "moderation_unavailable" in categories:
-        return SAFE_RESPONSES["moderation_unavailable"]
+        try:
+            category = FlagCategory.objects.get(name="moderation_unavailable")
+            if category.canned_response:
+                return category.canned_response
+        except FlagCategory.DoesNotExist:
+            pass
 
     return DEFAULT_SAFE_RESPONSE
 

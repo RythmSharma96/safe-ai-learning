@@ -1,3 +1,4 @@
+from django.core.management import call_command
 from django.test import TestCase
 
 from safety.checkers.keyword_checker import KeywordChecker
@@ -5,6 +6,7 @@ from safety.checkers.keyword_checker import KeywordChecker
 
 class TestKeywordChecker(TestCase):
     def setUp(self):
+        call_command("seed_flag_categories", verbosity=0)
         self.checker = KeywordChecker()
 
     # --- PII ---

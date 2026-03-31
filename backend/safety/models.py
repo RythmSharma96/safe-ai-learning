@@ -6,6 +6,16 @@ class FlagCategory(models.Model):
 
     name = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=255)
+    canned_response = models.TextField(
+        blank=True,
+        default="",
+        help_text="Safe response returned to learner when this category is flagged",
+    )
+    patterns = models.JSONField(
+        default=list,
+        blank=True,
+        help_text="List of regex patterns for keyword checker to match against",
+    )
 
     class Meta:
         verbose_name_plural = "flag categories"
