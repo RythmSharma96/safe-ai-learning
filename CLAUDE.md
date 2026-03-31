@@ -105,3 +105,58 @@ Must be prepared to explain and defend all major architecture decisions, importa
 
 ## After Submission
 Live review session: walk through system, discuss design decisions, talk through where AI helped and where it did not, review how to productionize the service further.
+
+---
+
+## Decisions & Architecture
+
+All architecture decisions, tradeoffs, and design rationale live in these docs — keep them updated as the project evolves:
+
+- **ARCHITECTURE.md** — system design, data flow, key components, production evolution plan
+- **README.md** — setup instructions, env vars, API reference, example calls
+- **TRADEOFFS.md** — remaining risks, intentional shortcuts, next priorities
+- **AI_USAGE.md** — where AI helped, what was corrected/rejected, and why
+
+## Dev Commands
+
+```bash
+# Start everything (backend + frontend + postgres)
+docker compose up --build -d
+
+# View logs
+docker compose logs -f backend
+docker compose logs -f frontend
+
+# Stop everything
+docker compose down
+
+# Stop and wipe DB (fresh start)
+docker compose down -v
+
+# Run backend tests
+cd backend && source venv/bin/activate
+DJANGO_SETTINGS_MODULE=config.settings.test python -m pytest -v
+
+# Run specific test file
+DJANGO_SETTINGS_MODULE=config.settings.test python -m pytest safety/tests/test_keyword_checker.py -v
+
+# Lint check
+ruff check . --exclude venv
+ruff format --check . --exclude venv
+
+# Auto-fix lint
+ruff check . --exclude venv --fix
+ruff format . --exclude venv
+
+# Create new migrations after model changes
+DJANGO_SETTINGS_MODULE=config.settings.development python manage.py makemigrations
+
+# Seed flag categories (runs automatically on docker compose up)
+python manage.py seed_flag_categories
+```
+
+## URLs
+
+- **Frontend:** http://localhost:3000
+- **Backend API:** http://localhost:8000
+- **Django Admin:** http://localhost:8000/admin/
