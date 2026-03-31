@@ -95,9 +95,7 @@ def _save_moderation_result(message, moderation_outcome):
         checker_results=moderation_outcome.checker_results,
     )
     if moderation_outcome.categories:
-        categories = FlagCategory.objects.filter(
-            name__in=moderation_outcome.categories
-        )
+        categories = FlagCategory.objects.filter(name__in=moderation_outcome.categories)
         result.flag_categories.set(categories)
     return result
 

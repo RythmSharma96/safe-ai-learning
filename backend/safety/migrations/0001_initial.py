@@ -5,40 +5,65 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('conversations', '0001_initial'),
+        ("conversations", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FlagCategory',
+            name="FlagCategory",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
-                ('description', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
+                ("description", models.CharField(max_length=255)),
             ],
             options={
-                'verbose_name_plural': 'flag categories',
-                'ordering': ['name'],
+                "verbose_name_plural": "flag categories",
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='ModerationResult',
+            name="ModerationResult",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('is_flagged', models.BooleanField(db_index=True, default=False)),
-                ('flag_reasons', models.JSONField(default=list)),
-                ('raw_scores', models.JSONField(default=dict)),
-                ('checker_results', models.JSONField(default=list)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('flag_categories', models.ManyToManyField(blank=True, to='safety.flagcategory')),
-                ('message', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='moderation_result', to='conversations.message')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("is_flagged", models.BooleanField(db_index=True, default=False)),
+                ("flag_reasons", models.JSONField(default=list)),
+                ("raw_scores", models.JSONField(default=dict)),
+                ("checker_results", models.JSONField(default=list)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "flag_categories",
+                    models.ManyToManyField(blank=True, to="safety.flagcategory"),
+                ),
+                (
+                    "message",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="moderation_result",
+                        to="conversations.message",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
     ]
