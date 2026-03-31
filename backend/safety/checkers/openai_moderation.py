@@ -11,12 +11,19 @@ CATEGORY_MAP = {
     "self-harm": "self_harm",
     "self-harm/intent": "self_harm",
     "self-harm/instructions": "self_harm",
+    "self_harm": "self_harm",
+    "self_harm/intent": "self_harm",
+    "self_harm/instructions": "self_harm",
     "sexual": "sexual_content",
     "sexual/minors": "sexual_content",
     "violence": "harm_content",
     "violence/graphic": "harm_content",
     "harassment": "manipulation",
     "harassment/threatening": "manipulation",
+    "hate": "harm_content",
+    "hate/threatening": "harm_content",
+    "illicit": "harm_content",
+    "illicit/violent": "harm_content",
 }
 
 
@@ -65,6 +72,13 @@ class OpenAIModerationChecker(SafetyChecker):
             }
 
         if hasattr(result, "categories") and result.categories:
+            flagged_by_openai = {
+                k: v for k, v in vars(result.categories).items() if v
+            }
+            if flagged_by_openai:
+                logger.info(
+                    "OpenAI flagged categories: %s", flagged_by_openai
+                )
             for openai_cat, flagged in vars(result.categories).items():
                 if flagged and openai_cat in CATEGORY_MAP:
                     internal_cat = CATEGORY_MAP[openai_cat]
