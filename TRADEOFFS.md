@@ -28,6 +28,8 @@
 
 7. **Message role as integer** — Stores 0/1/2 instead of "user"/"assistant"/"system" for storage efficiency. Requires mapping back to strings for the OpenAI API and frontend display. The right tradeoff for a table that grows with every message.
 
+8. **No conversation blocking after flags** — When a message is flagged, the learner gets a safe canned response but the conversation continues. The learner can keep sending messages, and subsequent messages are still screened. In production, a deliberate policy decision needs to be made: should the conversation be locked after N flags? Should the learner be temporarily blocked? Should a teacher be notified in real-time? These are product and safety policy decisions that should involve child safety experts, not just engineering judgment. We intentionally left the conversation open for the prototype and documented it as requiring a policy decision.
+
 ## Next Engineering Priorities
 
 1. **Prompt injection defense** — Add a dedicated safety checker for jailbreak patterns ("ignore previous instructions", "you are now...", "pretend you are...") to the safety pipeline. This is the highest-risk gap currently.
