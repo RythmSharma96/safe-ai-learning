@@ -18,7 +18,7 @@
 
 2. **No email verification** — Users can register with any email. Production would verify email ownership before granting access.
 
-3. **Hardcoded canned responses** — Flagged input gets static safe responses. Production would want these to be configurable (admin CMS or database-driven) and localized.
+3. **No localization for canned responses** — Canned responses are stored in the database and editable via Django admin, but only in English. Production would need localized responses based on the learner's language.
 
 4. **No conversation title auto-generation** — Titles are user-provided or blank. Could auto-generate from the first message using the AI.
 
