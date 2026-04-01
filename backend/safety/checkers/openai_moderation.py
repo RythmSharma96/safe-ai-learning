@@ -72,13 +72,9 @@ class OpenAIModerationChecker(SafetyChecker):
             }
 
         if hasattr(result, "categories") and result.categories:
-            flagged_by_openai = {
-                k: v for k, v in vars(result.categories).items() if v
-            }
+            flagged_by_openai = {k: v for k, v in vars(result.categories).items() if v}
             if flagged_by_openai:
-                logger.info(
-                    "OpenAI flagged categories: %s", flagged_by_openai
-                )
+                logger.info("OpenAI flagged categories: %s", flagged_by_openai)
             for openai_cat, flagged in vars(result.categories).items():
                 if flagged and openai_cat in CATEGORY_MAP:
                     internal_cat = CATEGORY_MAP[openai_cat]

@@ -4,20 +4,27 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('safety', '0001_initial'),
+        ("safety", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='flagcategory',
-            name='canned_response',
-            field=models.TextField(blank=True, default='', help_text='Safe response returned to learner when this category is flagged'),
+            model_name="flagcategory",
+            name="canned_response",
+            field=models.TextField(
+                blank=True,
+                default="",
+                help_text="Safe response returned to learner when this category is flagged",
+            ),
         ),
         migrations.AddField(
-            model_name='flagcategory',
-            name='patterns',
-            field=models.JSONField(blank=True, default=list, help_text='List of regex patterns for keyword checker to match against'),
+            model_name="flagcategory",
+            name="patterns",
+            field=models.JSONField(
+                blank=True,
+                default=list,
+                help_text="List of regex patterns for keyword checker to match against",
+            ),
         ),
     ]

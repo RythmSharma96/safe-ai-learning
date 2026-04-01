@@ -70,9 +70,7 @@ class KeywordChecker(SafetyChecker):
                         continue
 
                 categories.append(category_name)
-                reasons.append(
-                    f"{category_name.replace('_', ' ').title()} detected"
-                )
+                reasons.append(f"{category_name.replace('_', ' ').title()} detected")
                 raw_scores[f"{category_name}_matches"] = matches
 
         return CheckResult(
@@ -86,7 +84,10 @@ class KeywordChecker(SafetyChecker):
         """Filter out short number false positives from PII matches."""
         filtered = []
         for match in matches:
-            if isinstance(match, str) and match.replace(" ", "").replace("-", "").replace(".", "").isdigit():
+            if (
+                isinstance(match, str)
+                and match.replace(" ", "").replace("-", "").replace(".", "").isdigit()
+            ):
                 if len(match.replace(" ", "").replace("-", "").replace(".", "")) < 7:
                     continue
             filtered.append(match)
