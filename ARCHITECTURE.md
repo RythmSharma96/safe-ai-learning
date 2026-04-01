@@ -245,6 +245,8 @@ These are things you would need before going to production specifically because 
 
 **Immutable audit logging:** Every moderation decision, teacher action, and conversation event should be logged to a separate append-only audit table. This is essential for compliance and incident investigation — you need to prove what happened and when.
 
+**Multi-tenancy:** If the product serves multiple schools or organizations, data should be isolated per tenant at the database level. Options range from a shared database with a `tenant_id` column on every table (simplest), to separate schemas per tenant (Postgres schemas), to fully separate databases per tenant (strongest isolation, highest ops cost). For a child-safety product where schools may have compliance requirements around data access, schema-level or database-level isolation is likely required.
+
 ### Compliance Considerations
 
 Key regulations for a child-facing AI product: **COPPA** (US, parental consent for children under 13), **GDPR/UK Age Appropriate Design Code** (data protection impact assessments, privacy by default), **FERPA** (if used in schools, student records are protected), and the **EU AI Act** (classifies child-facing AI as high-risk, requires transparency that the child is talking to an AI).
