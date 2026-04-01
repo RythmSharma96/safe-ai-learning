@@ -122,3 +122,30 @@ OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
 SAFETY_USE_OPENAI_MODERATION = (
     os.environ.get("SAFETY_USE_OPENAI_MODERATION", "true").lower() == "true"
 )
+
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "conversations": {"level": "INFO"},
+        "safety": {"level": "INFO"},
+        "ai": {"level": "INFO"},
+    },
+}

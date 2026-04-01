@@ -116,6 +116,13 @@ export default function ChatPage() {
                 {messages.map((msg) => (
                   <ChatMessage key={msg.id} message={msg} />
                 ))}
+                {sending && (
+                  <div className="flex justify-start mb-4">
+                    <div className="bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-400">
+                      Thinking<span className="animate-pulse">...</span>
+                    </div>
+                  </div>
+                )}
                 <div ref={messagesEndRef} />
               </div>
               <ChatInput onSend={handleSendMessage} disabled={sending} />
